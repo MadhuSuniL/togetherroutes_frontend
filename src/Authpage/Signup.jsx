@@ -1,18 +1,25 @@
-import React, { useState ,useEffect} from 'react'
+import React, { useState ,useEffect, useContext, useRef} from 'react'
 import Loading from '../Loading'
 import logo from '../assests/plane.png'
+import { AuthContext } from '../contexts/AuthContext'
+
+
 
 const Signup = () => {
+    
+    // context states
+    const { login,register,otp_verification } = useContext(AuthContext)
 
     //states 
     const [loading , setLoading] = useState(false)
-    const [username,setUsername] = useState('')
+    const [name,setName] = useState('')
     const [email,setEmail] = useState('')
     const [number,setNumber] = useState('')
-    const [languages,setLanguages] = useState('')
+    const [language,setLanguage] = useState('')
     const [rotp,setROtp] = useState(0)
-    const [target,setTarget] = useState(false)
-    const [img,setImg] = useState(null)
+    const [target,setTarget] = useState(true)
+    // const [img,setImg] = useState(null)
+    const img = useRef(null);
     const [profileImage, setProfileImage] = useState('https://tse4.mm.bing.net/th?id=OIP.zagjQ5boIhl3BrdnhBeGqQHaHu&pid=Api&P=0')
 
     //error states 
@@ -20,18 +27,40 @@ const Signup = () => {
 
 
 
+
   
 
     //functions 
 
-    const handleForm = (f)=>{
+    const handleForm = async(f)=>{
         f.preventDefault()
         setLoading(true)
-        setUsername(f.target[0].value)
-        setEmail(f.target[1].value)
-        if(String(f.target[2].value).length === 10){
-            setNumber(f.target[2].value)
+        const profilev = document.getElementById('profiles').files[0]
+        const namev = f.target[1].value
+        const emailv = f.target[2].value
+        setEmail(emailv)
+        setROtp(123456)
+        if(String(f.target[3].value).length === 10){
+            const numberv = f.target[2].value
             document.getElementById('number-error').style.display='none'
+            const languagev = f.target[4].value
+            const otp = 123456
+
+            const form = new FormData()
+            form.append('profile',profilev)
+            form.append('email',emailv)
+            form.append('name',namev)
+            form.append('number',String(numberv))
+            form.append('otp',otp)
+            form.append('language',languagev)
+
+            const res = await register(form)
+            if(res == true){
+                setTarget(false)
+            }
+            setTimeout(function(){
+                setLoading(false)
+            },300)
         }
         else{
             document.getElementById(f.target[2].id).style.color='red'
@@ -48,7 +77,7 @@ const Signup = () => {
         },500)
     }
 
-    const handleForm2 = (f)=>{
+    const handleForm2 = async(f)=>{
         f.preventDefault()
         setLoading(true)
         
@@ -62,10 +91,17 @@ const Signup = () => {
             }
         }
         if(Number(otp) == rotp){
-            //called api
+            const res = await otp_verification(email)
+            if (res == true){
+                //.....
+            }
+
+            setTimeout(function(){
+                setLoading(false)
+            },500)
+            
         }
         else{
-            alert('r')
             document.getElementById(f.target[0].id).style.color='red'
             document.getElementById(f.target[1].id).style.color='red'
             document.getElementById(f.target[2].id).style.color='red'
@@ -104,11 +140,11 @@ const Signup = () => {
     const form = <form onSubmit={handleForm} className='border-2 border-sky-200 shadow-lg shadow-sky-300 rounded-lg p-5 px-3 md:mr-20 mt-1'>
         <center>
         <input type='file' onChange={handleImageChange} id='profiles' className='m-0 opacity-0 h-0 text-sky-400 mb-1 p-1 w-72 outline-none border-2 rounded-md bg-white border-sky-400'/>
-            {profileImage ? <img src={profileImage} className='rounded-full mt-[-4%] w-14' alt="Profile" /> :<img src={profileImage} alt="Profile" />}
+            {profileImage ? <img src={profileImage} ref={img} className='rounded-full mt-[-4%] w-14' alt="Profile" /> :<img src={profileImage} alt="Profile" />}
             <label htmlFor='profiles' id='imglabel' className='m-2 font-medium'>Profile</label><br/>
             <br></br>
             
-            <label htmlFor='usernames' className='m-2 font-medium'>Enter Your Username</label><br/>
+            <label htmlFor='usernames' className='m-2 font-medium'>Enter Your name</label><br/>
             <input type='text' id='usernames' required className='m-3 p-1 w-72 border-0 outline-none  border-b-2 bg-white border-sky-400'/>
             
             <label htmlFor='emails' className='m-2 font-medium'>Enter Your Email - (for otp) </label><br/>
@@ -312,8 +348,9 @@ const Signup = () => {
         
         </div>
         <div className='px-5'>
-        <h1 className='text-xl text-sky-400 m-5 mb-2 mt-4 text-center md:text-left md:mt-12 font-semibold'>Create Profile 1/2</h1>
-        {target ? form : form2 }
+        
+        
+        {target ? <span><h1 className='text-xl text-sky-400 m-5 mb-2 mt-4 text-center md:text-left md:mt-12 font-semibold'>Create Profile 1/2</h1> {form}</span> : <span><h1 className='text-xl text-sky-400 m-5 mb-2 mt-4 text-center md:text-left md:mt-32 font-semibold'>Create Profile 2/2</h1> {form2}</span> }
 
         {loading && <Loading/>}
         </div>

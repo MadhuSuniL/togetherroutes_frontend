@@ -73,15 +73,16 @@ const Header = () => {
     <div>
         {/* for large */}
 
-    <div className='hidden md:flex justify-around'>
+    <div className='hidden md:flex justify-around shadow-md mb-10 shadow-gray-300'>
         <div className='flex justify-center text-xl md:text-2xl text-sky-400 font font-semibold m-5 mb-2 mt-3 text-center md:mb-5'>
-            <span> <img src={logo} className='w-4 md:w-5 mt-1 md:mt-2 mx-2'/></span><h1 className=''>TravelMates<span className='text-yellow-400'>.com</span></h1>
+            <span> <img src={logo} className='w-4 md:w-5 mt-1  md:mt-2 mx-2'/></span><h1 className='mr-20'>TravelMates<span className='text-yellow-400'>.com</span></h1>
         </div>
         <div className='flex font-semibold'>
-            <h1 className='m-3' >Travelers</h1>
-            <h1 className='m-3'>My Travels</h1>
-            <h1 className='m-3'>Messages</h1>
-            <h1 className='m-3'>Profile</h1>
+        <h1 onClick={travel_click} className='m-3 mx-4'><img src={travelIcon} className='w-6 mx-auto mb-1'/> Travelers</h1>
+            <h1 onClick={my_click} className='m-3 mx-4'><img src={myIcon} className='w-6 mx-auto mb-1'/> My&nbsp;Trips</h1>
+            <h1 onClick={noti_click} className='m-3 mx-'><img src={msgIcon} className='w-6 mx-auto mb-1'/> Requests</h1>
+            <h1 onClick={msg_click} className='m-3 mx-4'><img src={notiIcon} className='w-6 mx-auto mb-1'/> Messages</h1>
+            <h1 onClick={profile_click} className='m-3 mx-4'><img src={profileIcon} className='w-6 mx-auto mb-1'/> Profile</h1>
         </div>
     </div>
     
@@ -91,10 +92,10 @@ const Header = () => {
     <div className='flex md:hidden justify-center text-xl md:text-2xl text-sky-400 font font-semibold m-5 mb-2 mt-3 text-center md:mb-5'>
             <span> <img src={logo} className='w-5 md:w-5 mt-[10%] md:mt-2 mx-2'/></span><h1 className=''>TravelMates<span className='text-yellow-400'>.com</span></h1>
         </div>
-    <div className='fixed md:hidden top-[89.8%] left-[49%] w-full translate-x-[-50%]'>
+    <div className='fixed md:hidden  bg-white top-[90.5%] w-full'>
         <div className='flex text-[12px] border-t-2 border-gray-0 shadow-xl shadow-gray-60 w-full'>
             <h1 onClick={travel_click} className='m-3 mx-4'><img src={travelIcon} className='w-6 mx-auto mb-1'/> Travelers</h1>
-            <h1 onClick={my_click} className='m-3 mx-4'><img src={myIcon} className='w-6 mx-auto mb-1'/> My&nbsp;Travels</h1>
+            <h1 onClick={my_click} className='m-3 mx-4'><img src={myIcon} className='w-6 mx-auto mb-1'/> My&nbsp;Trips</h1>
             <h1 onClick={noti_click} className='m-3 mx-'><img src={msgIcon} className='w-6 mx-auto mb-1'/> Requests</h1>
             <h1 onClick={msg_click} className='m-3 mx-4'><img src={notiIcon} className='w-6 mx-auto mb-1'/> Messages</h1>
             <h1 onClick={profile_click} className='m-3 mx-4'><img src={profileIcon} className='w-6 mx-auto mb-1'/> Profile</h1>

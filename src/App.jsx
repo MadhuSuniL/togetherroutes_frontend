@@ -6,6 +6,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import Header from './Header';
 import Travelers from './Homepage/Travelers';
 import Requests from './requests/Requests';
+import Messages from './Messages/Messages';
 
 const App = () => {
   
@@ -19,7 +20,8 @@ const App = () => {
         {/* <Header/> */}
         {/* <Travelers/> */}
         {/* <MyTrips/> */}
-        <Requests/>
+        {/* <Requests/> */}
+        <Messages/>
     </AuthProvider>
   )
 }

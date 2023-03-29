@@ -1,21 +1,32 @@
-import React, {useState}  from 'react'
+import React, { useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Traveler from '../Homepage/components/Traveler'
 import Header from '../Header'
 import tab from '../assests/tab.png'
+import { AuthContext } from '../contexts/AuthContext'
 
 
 
 
 const MyTrips = () => {
   // states
+  const nav = useNavigate()
+
   const [filter, setFilter] = useState(false)
   
   
+  const {authState} = useContext(AuthContext)
+    function check_auth(){
+        if(authState.isAuthenticated != true){
+            return nav('/signin')
+        }
+    }
+  
   return (
+    
 
-
-  <div className=''>
-      <Header/>
+  <div onLoad={check_auth} className=''>
+      <Header my={true}/>
       <div className='grid md:grid-cols-3 max-w-[1030px] p-1 mx-auto border-0 border-black'>
       {/* filter */}
       <div className='hidden md:block p-3 m-3 shadow-sm rounded-md shadow-gray-500'>

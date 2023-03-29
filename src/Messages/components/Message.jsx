@@ -7,45 +7,14 @@ const Message = () => {
         {/* Messages */}
         <div className='tra overflow-y-scroll h-[500px] md:h-[440px]'>
       
-        <div className='m-3 rounded-lg p-2 flex justify-end  items-center bg-gray-100'>
-           <img src={user} className='w-7 rounded-full mr-2' /> Hello!
+        <div className='m-3 rounded-lg p-2 flex flex-row-reverse justify-start  items-center bg-gray-200'>
+           <img src={user} className='w-7 rounded-full ml-2' /> Hello!
         </div>
 
         <div className='m-3 rounded-lg p-2 flex items-center text-white bg-sky-400'>
         <img src={user} className='w-7 rounded-full mr-2' /> Hai
         </div>
-      
-        <div className='m-3 rounded-lg p-2 flex justify-end  items-center bg-gray-100'>
-           <img src={user} className='w-7 rounded-full mr-2' /> Hello!
-        </div>
 
-        <div className='m-3 rounded-lg p-2 flex items-center text-white bg-sky-400'>
-        <img src={user} className='w-7 rounded-full mr-2' /> Hai
-        </div>
-      
-        <div className='m-3 rounded-lg p-2 flex justify-end  items-center bg-gray-100'>
-           <img src={user} className='w-7 rounded-full mr-2' /> Hello!
-        </div>
-
-        <div className='m-3 rounded-lg p-2 flex items-center text-white bg-sky-400'>
-        <img src={user} className='w-7 rounded-full mr-2' /> Hai
-        </div>
-      
-        <div className='m-3 rounded-lg p-2 flex justify-end  items-center bg-gray-100'>
-           <img src={user} className='w-7 rounded-full mr-2' /> Hello!
-        </div>
-
-        <div className='m-3 rounded-lg p-2 flex items-center text-white bg-sky-400'>
-        <img src={user} className='w-7 rounded-full mr-2' /> Hai
-        </div>
-      
-        <div className='m-3 rounded-lg p-2 flex justify-end  items-center bg-gray-100'>
-           <img src={user} className='w-7 rounded-full mr-2' /> Hello!
-        </div>
-
-        <div className='m-3 rounded-lg p-2 flex items-center text-white bg-sky-400'>
-        <img src={user} className='w-7 rounded-full mr-2' /> Hai
-        </div>
 
         </div>
 

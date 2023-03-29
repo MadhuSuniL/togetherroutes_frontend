@@ -1,16 +1,26 @@
-import React, {useState} from 'react'
+import React, { useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Header from '../Header'
 import Message from './components/Message'
 import Chat from './components/Chat'
 import user from '../assests/g.png'
-const Messages = () => {
+import { AuthContext } from '../contexts/AuthContext'
 
+const Messages = () => {
+    
+    const nav = useNavigate()
     const [filter, setFilter] = useState(false)
   
-  
+    const {authState} = useContext(AuthContext)
+    function check_auth(){
+        if(authState.isAuthenticated != true){
+            return nav('/signin')
+        }
+    }
+
     return (
-    <div className=''>
-        <Header/>
+    <div onLoad={check_auth} className=''>
+        <Header msg={true}/>
         <div className='grid md:grid-cols-3 gap-2 max-w-[1030px] p-1 mx-auto border-0 border-black'>
         {/* filter */}
         <div className='tra overflow-y-scroll hidden md:block p-1 m-3 shadow-sm h-[535px] rounded-md shadow-gray-500'>
@@ -44,7 +54,7 @@ const Messages = () => {
 
         <div className={filter ? 'md:hidden fixed bg-white w-full h-[650px] top-0 text-md p-5 left-0' : 'hidden md:hidden fixed bg-white w-full h-full top-0 text-lg p-5 left-0'}>
         <h1 className='text-center m-2 text-lg text-sky-400 font-semibold'>Chats</h1>
-        <div className='tra overflow-y-scroll md:hidden p-0 m-0 shadow-sm h-[585px] rounded-md shadow-gray-500'>
+        <div className='tra overflow-y-scroll md:hidden p-0 m-0 shadow-sm h-[535px] rounded-md shadow-gray-500'>
         <Chat/>
         </div>
         </div>

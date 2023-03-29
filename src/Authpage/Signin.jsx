@@ -1,21 +1,28 @@
-import React, { useState ,useEffect, useContext, useRef} from 'react'
+import React, { useState ,useEffect, useContext} from 'react'
 import Loading from '../Loading'
 import logo from '../assests/plane.png'
 import { AuthContext } from '../contexts/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 
 
 const Signin = () => {
     
     // context states
-    const { login } = useContext(AuthContext)
-
+    const domain = 'http://localhost:8000/'
+    const { login, authState } = useContext(AuthContext)
+    const nav = useNavigate()
     //states 
     const [loading , setLoading] = useState(false)
     const [email,setEmail] = useState('')
     const [rotp,setROtp] = useState(123456)
     const [target,setTarget] = useState(true)
     
+    function check_auth() {
+        if(authState.isAuthenticated == true){
+            return nav('/')
+        }
+    }
     
 
 
@@ -28,7 +35,19 @@ const Signin = () => {
         f.preventDefault()
         setLoading(true)
         setEmail(f.target[0].value)
-        //otp call 
+        
+        fetch(`${domain}travelers/send_email`,{
+            headers:{
+                'Content-Type' : 'application/json',
+                'Accept' : 'application/json',
+            },
+            method:'POST',
+            body:JSON.stringify({
+                'email':f.target[0].value,
+                'otp':rotp
+            })
+        })
+
         setTarget(false)
         setTimeout(function(){
             setLoading(false)
@@ -52,9 +71,11 @@ const Signin = () => {
             const res = await login(email)
             if (res == true){
                 //.....
-                alert('login')
+                setTimeout(function(){
+                    setLoading(false)
+                },500)
+                return nav('/')
             }
-
             setTimeout(function(){
                 setLoading(false)
             },500)
@@ -182,12 +203,10 @@ const Signin = () => {
 </form>
   
   
-  
-
 
 
     return (
-    <div className='md:flex justify-around'>
+    <div onLoad={check_auth} className='md:flex justify-around'>
         <div>
         <div className='flex justify-center text-3xl md:text-4xl text-sky-400 font font-semibold m-5 mb-2 mt-3 text-center md:mb-5 md:mt-64'>
             <span> <img src={logo} className='w-7 md:w-8 mt-1 md:mt-2 mx-2'/></span><h1 className=''>TravelMates<span className='text-yellow-400'>.com</span></h1>
@@ -198,7 +217,7 @@ const Signin = () => {
         <div className='px-5'>
         
         
-        {target ? <span><h1 className='text-xl text-sky-400 m-5 mb-2 mt-4 text-center md:text-left md:mt-48 font-semibold'>Create Profile 1/2</h1> {form}</span> : <span><h1 className='text-xl text-sky-400 m-5 mb-2 mt-4 text-center md:text-left md:mt-32 font-semibold'>Create Profile 2/2</h1> {form2}</span> }
+        {target ? <span><h1 className='text-xl text-sky-400 m-5 mb-2 mt-4 text-center md:text-left md:mt-48 font-semibold'>Signin</h1> {form}</span> : <span><h1 className='text-xl text-sky-400 m-5 mb-2 mt-4 text-center md:text-left md:mt-32 font-semibold'>OTP</h1> {form2}</span> }
 
         {loading && <Loading/>}
         </div>

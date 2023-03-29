@@ -2,13 +2,15 @@ import React, { useState ,useEffect, useContext, useRef} from 'react'
 import Loading from '../Loading'
 import logo from '../assests/plane.png'
 import { AuthContext } from '../contexts/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 
 
 const Signup = () => {
     
     // context states
-    const { login,register,otp_verification } = useContext(AuthContext)
+    const { login,register,otp_verification, authState } = useContext(AuthContext)
+    const nav = useNavigate()
 
     //states 
     const [loading , setLoading] = useState(false)
@@ -26,6 +28,11 @@ const Signup = () => {
     const [number_error , setNumber_Error] = useState(true)
 
 
+    function check_auth() {
+        if(authState.isAuthenticated == true){
+            return nav('/')
+        }
+    }
 
 
   
@@ -339,7 +346,7 @@ const Signup = () => {
 
 
     return (
-    <div className='md:flex justify-around'>
+    <div onLoad={check_auth} className='md:flex justify-around'>
         <div>
         <div className='flex justify-center text-3xl md:text-4xl text-sky-400 font font-semibold m-5 mb-2 mt-3 text-center md:mb-5 md:mt-64'>
             <span> <img src={logo} className='w-7 md:w-8 mt-1 md:mt-2 mx-2'/></span><h1 className=''>TravelMates<span className='text-yellow-400'>.com</span></h1>

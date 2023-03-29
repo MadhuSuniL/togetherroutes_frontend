@@ -1,16 +1,76 @@
 import React, { createContext, useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 export const AuthContext = createContext()
 
 export const AuthProvider = ({children}) =>{
+    const token_time = 550000 
     const domain = 'http://localhost:8000/'
     const [authState, setAuthState] = useState({
-        isAthenticated : false,
+        isAuthenticated : false,
         access:null,
-        refesh:null,
+        refresh:null,
     })
 
 
+    useEffect(()=>{
+        var inter = null
+        if(authState.isAuthenticated == true){
+           inter = setInterval(refresh_token,token_time)
+        }
+        else{
+            clearInterval(inter)
+        }
+
+        const access = localStorage.getItem('access')
+        const refresh = localStorage.getItem('refresh')
+        
+        if(access != null && refresh != null){
+            setAuthState({
+                isAuthenticated : true,
+                access:access,
+                refresh:refresh,
+            })
+        }
+    },[authState.isAuthenticated])
+
+    
+
+    async function refresh_token(){
+        const response = await fetch(`${domain}travelers/token/refresh/`,{
+            headers:{
+                'Content-Type' : 'application/json',
+                'Accept' : 'application/json',
+            },
+        method:'POST',
+        body:JSON.stringify({
+            'refresh':authState.refresh
+        })
+    })
+    if(response.status >= 400){
+            localStorage.removeItem('access')
+            localStorage.removeItem('refresh')
+            setAuthState({
+                isAuthenticated : false,
+                access:null,
+                refresh:null,
+            })
+        return window.location.href = '/signin'
+
+      }
+      const data = await response.json()
+      localStorage.setItem('access',data.access)
+      setAuthState({
+        isAuthenticated : true,
+        access:data.access,
+        refresh:authState.refresh,
+    })
+    }
+    
+    // useEffect(()=>{
+    //     refresh_token()
+    // },[])
+    
+    
     const register = async (form) =>{
         
         const response = await fetch(`${domain}travelers/register`,{
@@ -39,11 +99,11 @@ export const AuthProvider = ({children}) =>{
         if(response.status == 200){
             const data = await response.json()
             localStorage.setItem('access',data.access)
-            localStorage.setItem('refresh',data.refesh)
+            localStorage.setItem('refresh',data.refresh)
             setAuthState({
-                isAthenticated : true,
+                isAuthenticated : true,
                 access:data.access,
-                refesh:data.refesh,
+                refresh:data.refresh,
             })
             return true
         }
@@ -64,11 +124,11 @@ export const AuthProvider = ({children}) =>{
         if(response.status == 200){
             const data = await response.json()
             localStorage.setItem('access',data.access)
-            localStorage.setItem('refresh',data.refesh)
+            localStorage.setItem('refresh',data.refresh)
             setAuthState({
-                isAthenticated : true,
+                isAuthenticated : true,
                 access:data.access,
-                refesh:data.refesh,
+                refresh:data.refresh,
             })
             return true
         }
@@ -80,11 +140,15 @@ export const AuthProvider = ({children}) =>{
         localStorage.setItem('access','')       
         localStorage.setItem('refresh','')
         setAuthState({
-            isAthenticated : false,
+            isAuthenticated : false,
             access:null,
-            refesh:null,
+            refresh:null,
         })       
     }
+
+
+
+
 
 
     return (

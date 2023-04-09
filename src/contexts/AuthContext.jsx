@@ -9,6 +9,7 @@ export const AuthProvider = ({children}) =>{
         isAuthenticated : false,
         access:null,
         refresh:null,
+        domain : 'http://localhost:8000/'
     })
 
 
@@ -29,6 +30,8 @@ export const AuthProvider = ({children}) =>{
                 isAuthenticated : true,
                 access:access,
                 refresh:refresh,
+                domain : 'http://localhost:8000/'
+
             })
         }
     },[authState.isAuthenticated])
@@ -53,6 +56,8 @@ export const AuthProvider = ({children}) =>{
                 isAuthenticated : false,
                 access:null,
                 refresh:null,
+                domain : 'http://localhost:8000/'
+
             })
         return window.location.href = '/signin'
 
@@ -63,6 +68,8 @@ export const AuthProvider = ({children}) =>{
         isAuthenticated : true,
         access:data.access,
         refresh:authState.refresh,
+        domain : 'http://localhost:8000/'
+
     })
     }
     
@@ -104,6 +111,8 @@ export const AuthProvider = ({children}) =>{
                 isAuthenticated : true,
                 access:data.access,
                 refresh:data.refresh,
+                domain : 'http://localhost:8000/'
+
             })
             return true
         }
@@ -129,6 +138,8 @@ export const AuthProvider = ({children}) =>{
                 isAuthenticated : true,
                 access:data.access,
                 refresh:data.refresh,
+                domain : 'http://localhost:8000/'
+
             })
             return true
         }
@@ -143,6 +154,8 @@ export const AuthProvider = ({children}) =>{
             isAuthenticated : false,
             access:null,
             refresh:null,
+            domain : 'http://localhost:8000/'
+
         })       
     }
 

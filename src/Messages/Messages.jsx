@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Header from '../Header'
 import Message from './components/Message'
@@ -14,7 +14,8 @@ const Messages = () => {
     
     const nav = useNavigate()
     const [filter, setFilter] = useState(false)
-  
+    const [data, setData] = useState([])
+
     const {authState} = useContext(AuthContext)
     function check_auth(){
         if(authState.isAuthenticated != true){
@@ -22,9 +23,23 @@ const Messages = () => {
         }
     }
     
-    function CreateApi(){
-
-    }
+    function CreateApi(f){
+      f.preventDefault()
+      alert(f.target[0].value)
+      const response = fetch(authState.domain+'messages/recv_msg',{
+          headers:{
+            'Content-Type':'application/json',
+            'Accept':'application/json'
+          },
+          method:'POST',
+          body:JSON.stringify({
+            receiver_id : 1,
+            message:f.target[0].value
+          })
+        })
+      f.target[0].value = ''
+        
+      }
 
     const [reciverId , setRecieverId] = useState(null)
     const [reciverName , setRecieverName] = useState('Select Mate')
@@ -35,7 +50,15 @@ const Messages = () => {
     }
 
 
+     async function Api(){
+        const response = await fetch(authState.domain+'messages/get_msgs/')
+        const res_data = await response.json()
+        setData(res_data)
+      }
 
+      useEffect(()=>{
+        Api()
+      },[])
 
     return (
     <div onLoad={check_auth} className=''>
@@ -47,6 +70,7 @@ const Messages = () => {
         <form onSubmit={CreateApi}>
 
           <label htmlFor='to' className='m-4 font-medium'>TravelMate</label><br/>
+        
         <h1 onClick={()=>setOptBoll(!optBool)} className='flex cursor-pointer m-4 items-center text-md shadow-sm text-sky-400 border-0 rounded-md font-bold'><img src={reciverImg} className='w-10 mr-2 rounded-full'/> {reciverName}</h1>
         {/* opts */}
         <div className={optBool ? 'fixed duration-500 top-[50%] w-96 h-[300px] tra overflow-y-scroll left-[50%] translate-x-[-50%] translate-y-[-50%] bg-white p-3 shadow-md shadow-sky-300 rounded-md' : 'fixed duration-500 left-[200%]'}>
@@ -64,8 +88,8 @@ const Messages = () => {
 
 
           <br/>
-          <label htmlFor='title' className='m-4 font-medium'>Message</label><br/>
-          <input type='text' required id='title' className='m-3 p-1 border-0 outline-none h-5  border-b-2 bg-white border-sky-400'/><br/>
+          <label htmlFor='msg' className='m-4 font-medium'>Message</label><br/>
+          <input type='text' placeholder='Type Message Here..' required id='msg' className='m-3 p-1 border-0 outline-none h-5  border-b-2 bg-white border-sky-400'/><br/>
 
       
 <br></br>
@@ -93,21 +117,11 @@ const Messages = () => {
             </div>        
 
         <div className='tra overflow-x-scroll h-[535px]'>
-        <Chat/>
-        <Chat/>
-        <Chat/>
-        <Chat/>
-        <Chat/>
-        <Chat/>
-        <Chat/>
-        <Chat/>
-        <Chat/>
-        <Chat/>
-        <Chat/>
-        <Chat/>
-        <Chat/>
-        <Chat/>
-        <Chat/>
+        
+        {
+          data.map(obj=> <Chat key={obj.id} sender={obj.sender} receiver={obj.receiver} msg={obj.message} time={obj.time} /> )
+        }
+        
         </div>
         </div>
         

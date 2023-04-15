@@ -41,7 +41,8 @@ const Messages = () => {
         
       }
 
-    const [reciverId , setRecieverId] = useState(null)
+
+      const [reciverId , setRecieverId] = useState(null)
     const [reciverName , setRecieverName] = useState('Select Mate')
     const [reciverImg , setRecieverImg] = useState('https://tse4.mm.bing.net/th?id=OIP.zagjQ5boIhl3BrdnhBeGqQHaHu&pid=Api&P=0')
     const [optBool, setOptBoll] = useState(false)

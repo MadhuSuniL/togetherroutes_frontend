@@ -5,11 +5,13 @@ export const AuthContext = createContext()
 export const AuthProvider = ({children}) =>{
     const token_time = 550000 
     const domain = 'http://localhost:8000/'
+    // const domain = 'https://travelmates.pythonanywhere.com/'
     const [authState, setAuthState] = useState({
         isAuthenticated : false,
         access:null,
         refresh:null,
         domain : 'http://localhost:8000/'
+        // domain : 'https://travelmates.pythonanywhere.com/'
     })
 
 
@@ -31,6 +33,7 @@ export const AuthProvider = ({children}) =>{
                 access:access,
                 refresh:refresh,
                 domain : 'http://localhost:8000/'
+                // domain : 'https://travelmates.pythonanywhere.com/'
 
             })
         }
@@ -57,7 +60,7 @@ export const AuthProvider = ({children}) =>{
                 access:null,
                 refresh:null,
                 domain : 'http://localhost:8000/'
-
+                // domain : 'https://travelmates.pythonanywhere.com/'
             })
         return window.location.href = '/signin'
 
@@ -69,6 +72,7 @@ export const AuthProvider = ({children}) =>{
         access:data.access,
         refresh:authState.refresh,
         domain : 'http://localhost:8000/'
+        // domain : 'https://travelmates.pythonanywhere.com/'
 
     })
     }
@@ -112,7 +116,7 @@ export const AuthProvider = ({children}) =>{
                 access:data.access,
                 refresh:data.refresh,
                 domain : 'http://localhost:8000/'
-
+                // domain : 'https://travelmates.pythonanywhere.com/'
             })
             return true
         }
@@ -139,7 +143,7 @@ export const AuthProvider = ({children}) =>{
                 access:data.access,
                 refresh:data.refresh,
                 domain : 'http://localhost:8000/'
-
+                // domain : 'https://travelmates.pythonanywhere.com/'
             })
             return true
         }
@@ -155,6 +159,7 @@ export const AuthProvider = ({children}) =>{
             access:null,
             refresh:null,
             domain : 'http://localhost:8000/'
+            // domain : 'https://travelmates.pythonanywhere.com/'
 
         })       
     }

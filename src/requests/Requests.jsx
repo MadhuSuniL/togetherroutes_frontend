@@ -3,39 +3,39 @@ import { useNavigate } from 'react-router-dom'
 import Request from './components/Request'
 import Header from '../Header'
 import { AuthContext } from '../contexts/AuthContext'
+import Loading from '../Loading'
 
 const Requests = () => {
   // states
   const [filter, setFilter] = useState(false)
   const nav = useNavigate()
   const [data,setdata] = useState([])
+  const [loading,setLoading] = useState(false)
   
   const {authState} = useContext(AuthContext)
   function check_auth(){
       if(authState.isAuthenticated != true){
           return nav('/signin')
+        }
       }
-  }
-
-  async function Api(){
+      
+      async function Api(){
+        setLoading(true)   
       const response = await fetch(authState.domain+'requests/get_reqs/')
 
       const res_data = await response.json()
       setdata(res_data)
+      setLoading(false)
   }
 
   
-async function Accept_Reject(){
-    const response = await fetch(authState.domain+'requests/accept_reject',{
-      method:'PUT'
-    })
-}
-
 
 async function Delete(){
+  setLoading(true)
   const response = await fetch(authState.domain+'requests/delete',{
     method:'DELETE'
   })
+  setLoading(false)
   Api()
 }
 
@@ -49,6 +49,7 @@ useEffect(()=>{
   return (
 
   <div onLoad={check_auth} className=''>
+    {loading && <Loading/>}
       <Header req={true}/>
         <div className='flex max-w-[702px] mx-auto justify-around'>
       <h1 className='text-center m-2 text-lg font-semibold'>Requests ({data.length})</h1>

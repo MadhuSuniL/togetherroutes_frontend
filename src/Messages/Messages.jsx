@@ -7,7 +7,7 @@ import user from '../assests/g.png'
 import refresh from '../assests/refresh.png'
 import book2 from '../assests/book2.png'
 import pencil from '../assests/navbar/pencil.png'
-
+import Loading from '../Loading'
 import { AuthContext } from '../contexts/AuthContext'
 
 const Messages = () => {
@@ -15,34 +15,36 @@ const Messages = () => {
     const nav = useNavigate()
     const [filter, setFilter] = useState(false)
     const [data, setData] = useState([])
-
+    const [loading,setLoading] = useState(false)
+    
     const {authState} = useContext(AuthContext)
     function check_auth(){
-        if(authState.isAuthenticated != true){
-            return nav('/signin')
-        }
+      if(authState.isAuthenticated != true){
+        return nav('/signin')
+      }
     }
     
     function CreateApi(f){
+      setLoading(true)   
       f.preventDefault()
       alert(f.target[0].value)
       const response = fetch(authState.domain+'messages/recv_msg',{
-          headers:{
-            'Content-Type':'application/json',
-            'Accept':'application/json'
-          },
-          method:'POST',
-          body:JSON.stringify({
-            receiver_id : 1,
-            message:f.target[0].value
-          })
+        headers:{
+          'Content-Type':'application/json',
+          'Accept':'application/json'
+        },
+        method:'POST',
+        body:JSON.stringify({
+          receiver_id : 1,
+          message:f.target[0].value
         })
+      })
       f.target[0].value = ''
-        
-      }
-
-
-      const [reciverId , setRecieverId] = useState(null)
+      setLoading(false)      
+    }
+    
+    const [mates,setMates] = useState([])
+    const [reciverId , setRecieverId] = useState(null)
     const [reciverName , setRecieverName] = useState('Select Mate')
     const [reciverImg , setRecieverImg] = useState('https://tse4.mm.bing.net/th?id=OIP.zagjQ5boIhl3BrdnhBeGqQHaHu&pid=Api&P=0')
     const [optBool, setOptBoll] = useState(false)
@@ -51,10 +53,24 @@ const Messages = () => {
     }
 
 
+    async function get_mates(){
+      setLoading(true)
+      const response = await fetch(authState.domain+'travelmates/get_mates/')
+      const res_data = await response.json()
+      setMates(res_data)
+      setLoading(false)
+    }
+
+
+
+
+
      async function Api(){
+      setLoading(true)     
         const response = await fetch(authState.domain+'messages/get_msgs/')
         const res_data = await response.json()
         setData(res_data)
+        setLoading(false)
       }
 
       useEffect(()=>{
@@ -63,6 +79,7 @@ const Messages = () => {
 
     return (
     <div onLoad={check_auth} className=''>
+      {loading && <Loading/>}
         <Header msg={true}/>
         <div className='grid md:grid-cols-3 gap-2 max-w-[1030px] p-1 mx-auto border-0 border-black'>
         {/* filter */}
@@ -72,25 +89,31 @@ const Messages = () => {
 
           <label htmlFor='to' className='m-4 font-medium'>TravelMate</label><br/>
         
-        <h1 onClick={()=>setOptBoll(!optBool)} className='flex cursor-pointer m-4 items-center text-md shadow-sm text-sky-400 border-0 rounded-md font-bold'><img src={reciverImg} className='w-10 mr-2 rounded-full'/> {reciverName}</h1>
+        <h1 onClick={()=>{
+          setOptBoll(!optBool)
+          get_mates()
+        }} className='flex cursor-pointer m-4 items-center text-md shadow-sm text-sky-400 border-0 rounded-md font-bold'><img src={reciverImg} className='w-10 mr-2 rounded-full'/> {reciverName}</h1>
         {/* opts */}
         <div className={optBool ? 'fixed duration-500 top-[50%] w-96 h-[300px] tra overflow-y-scroll left-[50%] translate-x-[-50%] translate-y-[-50%] bg-white p-3 shadow-md shadow-sky-300 rounded-md' : 'fixed duration-500 left-[200%]'}>
         
         <h1 className='text-center m-2 text-lg font-semibold'>Travelmates</h1>
         
-        <h1 onClick={()=>{
+        {
+          mates.map(obj=> <h1 key={obj.id} onClick={()=>{
             setOptBoll(!optBool)
-            setRecieverImg()
-            setRecieverName()
+            setRecieverImg(authState.domain+obj.mate_var.profile)
+            setRecieverName(obj.mate_var.name)
+            setRecieverId(obj.mate_var.id)
         }
-        } className='flex cursor-pointer m-4 items-center text-md shadow-sm text-sky-400 border-0 rounded-md font-bold'><img src={reciverImg} className='w-10 mr-2 rounded-full'/> {reciverName}</h1>
+        } className='flex cursor-pointer m-4 items-center text-md shadow-sm text-sky-400 border-0 rounded-md font-bold'><img src={authState.domain+obj.mate_var.profile} className='w-10 mr-2 rounded-full'/> {obj.mate_var.name}</h1>)
+        }
         
         </div>
 
 
           <br/>
           <label htmlFor='msg' className='m-4 font-medium'>Message</label><br/>
-          <input type='text' placeholder='Type Message Here..' required id='msg' className='m-3 p-1 border-0 outline-none h-5  border-b-2 bg-white border-sky-400'/><br/>
+          <input type='text' placeholder='Type Message Here..' required id='msg' className='m-3 p-1 pb-3 text-gray-500 border-0 outline-none h-5  border-b-2 bg-white border-sky-400'/><br/>
 
       
 <br></br>
@@ -108,7 +131,7 @@ const Messages = () => {
         <div className='flex justify-around items-center'>
         <h1 className='text-center m-2 text-lg font-semibold block md:hidden text-black'>Messages</h1>
         
-        <img src={refresh} className='w-7 hidden md:block mr-2 rounded-full cursor-pointer'/> 
+        <img src={refresh} onClick={()=> Api()} className='w-7 active:animate-spin hidden md:block mr-2 rounded-full cursor-pointer'/> 
         <h1 className='text-center m-2 text-lg font-semibold hidden md:flex items-start text-sky-400'><img src={book2} className='w-7 cursor-pointer'/></h1>
             </div>
         <div className='md:hidden mb-2 flex justify-around overflow-x-scroll w-96'>

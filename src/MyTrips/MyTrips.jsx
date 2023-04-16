@@ -4,6 +4,7 @@ import Traveler from '../Homepage/components/Traveler'
 import Header from '../Header'
 import tab from '../assests/tab.png'
 import { AuthContext } from '../contexts/AuthContext'
+import Loading from '../Loading'
 
 
 
@@ -14,15 +15,17 @@ const MyTrips = () => {
 
   const [filter, setFilter] = useState(false)
   const [trips, setTrips] = useState([])
+  const [loading,setLoading] = useState(false)
   
   const {authState} = useContext(AuthContext)
-    function check_auth(){
-        if(authState.isAuthenticated != true){
-            return nav('/signin')
+  function check_auth(){
+      if(authState.isAuthenticated != true){
+          return nav('/signin')
         }
     }
-
+    
     const Api = async () =>{
+        setLoading(true)   
         const response = await fetch(`${authState.domain}trips/trip_get_for_user/`,{
             headers:{
                 'Content-Type':'application/json',
@@ -32,6 +35,7 @@ const MyTrips = () => {
         })
         const data = await response.json()
         setTrips(data)
+        setLoading(false)
     }
 
     useEffect(()=>{
@@ -40,6 +44,7 @@ const MyTrips = () => {
 
 
     async function CreateApi(f){
+        setLoading(true)
         f.preventDefault()
         const response = await fetch(`${authState.domain}trips/trip_create`,{
             headers:{
@@ -56,8 +61,8 @@ const MyTrips = () => {
             })
         })
         const data = await response.json()
+        setLoading(false)
         Api()
-
     }
 
 
@@ -136,6 +141,7 @@ const MyTrips = () => {
       <input type='reset' value={'Cancel'} onClick={()=>setFilter(!filter)} className='border-2 p-3 float-right py-1 rounded-md m-2 font-bold border-sky-400'/>
       </form>
       </div>
+      {loading && <Loading/>}
   </div>
 )
 }

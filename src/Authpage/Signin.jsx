@@ -5,9 +5,9 @@ import { AuthContext } from '../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 
 
-
 const Signin = () => {
     
+
     // context states
     const domain = 'https://travelmates.pythonanywhere.com/'
     // const domain = 'http://localhost:8000/'
@@ -118,6 +118,10 @@ const Signin = () => {
             <input type='submit' className='bg-sky-400 cursor-pointer text-white border-2 border-sky-400 active:border-black hover:border-black active:scale-105 p-1 px-3 rounded-md'/>
         
         </center>
+        <h1 className='text-black text-[13px] float-right m-2'>Dont have an account ? <span onClick={()=> {
+        return nav('/signup')}} className='text-sky-400 font-bold cursor-pointer text-sm'>Register</span></h1>
+        <br />
+    
     </form>
     
     
@@ -201,7 +205,9 @@ const Signin = () => {
             
             <input type='submit' className='bg-sky-400 cursor-pointer text-white border-2 border-sky-400 active:border-black hover:border-black active:scale-105 p-1 px-3 rounded-md'/>
     </center>
-        
+    <h1 className='text-black text-[13px] float-right m-2'>Testing OTP : <span className='text-sky-400 font-bold'>123456</span></h1>
+        <br />
+
 </form>
   
   

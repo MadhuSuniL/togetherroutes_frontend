@@ -253,6 +253,8 @@ const Signup = () => {
             <input type='submit' className='bg-sky-400 cursor-pointer text-white border-2 border-sky-400 active:border-black hover:border-black active:scale-105 p-1 px-3 rounded-md'/>
         
         </center>
+        <h1 className='text-black text-[13px] float-right m-2'>Already have an account ? <span onClick={()=>nav('/signin')} className='text-sky-400 text-sm font-bold cursor-pointer'>Login</span></h1>
+        <br />
     </form>
     
     

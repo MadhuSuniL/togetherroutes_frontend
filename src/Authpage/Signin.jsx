@@ -9,7 +9,8 @@ import { useNavigate } from 'react-router-dom'
 const Signin = () => {
     
     // context states
-    const domain = 'http://localhost:8000/'
+    const domain = 'https://travelmates.pythonanywhere.com/'
+    // const domain = 'http://localhost:8000/'
     const { login, authState } = useContext(AuthContext)
     const nav = useNavigate()
     //states 
@@ -40,6 +41,7 @@ const Signin = () => {
             headers:{
                 'Content-Type' : 'application/json',
                 'Accept' : 'application/json',
+                
             },
             method:'POST',
             body:JSON.stringify({
@@ -121,7 +123,7 @@ const Signin = () => {
     
     const form2 = <form onSubmit={handleForm2} className='border-2 border-sky-200 shadow-lg shadow-sky-300 md:w-96 rounded-lg p-5 px-3 md:mr-20 mt-1'>
     <center>
-    <label htmlFor='numbers_1' className='m-2 mb-1 font-medium'>Enter OTP <br/><br/><span className='text-[12px]'>An OTP has been sent to <span class='text-sky-400 text-sm'>bagammagarimadhu@gmail</span> <br/>"The OTP will expire after 10 minutes."</span> </label><br/>
+    <label htmlFor='numbers_1' className='m-2 mb-1 font-medium'>Enter OTP <br/><br/><span className='text-[12px]'>An OTP has been sent to <span class='text-sky-400 text-sm'>{email}</span> <br/>"The OTP will expire after 10 minutes."</span> </label><br/>
             <input type='number' onChange={(e)=>{
                 e.target.style.color='black'
                 if (e.target.value == ''){

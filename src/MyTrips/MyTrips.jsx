@@ -5,6 +5,7 @@ import Header from '../Header'
 import tab from '../assests/tab.png'
 import { AuthContext } from '../contexts/AuthContext'
 import Loading from '../Loading'
+import explore from '../assests/travel.png'
 
 
 
@@ -29,7 +30,9 @@ const MyTrips = () => {
         const response = await fetch(`${authState.domain}trips/trip_get_for_user/`,{
             headers:{
                 'Content-Type':'application/json',
-                'Accept':'application/json'
+                'Accept':'application/json',
+                'Authorization':'Bearer '+authState.access
+
             },
             method:'GET'
         })
@@ -49,7 +52,9 @@ const MyTrips = () => {
         const response = await fetch(`${authState.domain}trips/trip_create`,{
             headers:{
                 'Content-Type':'application/json',
-                'Accept':'application/json'
+                'Accept':'application/json',
+                'Authorization':'Bearer '+authState.access
+
             },
             method:'POST',
             body:JSON.stringify({
@@ -67,7 +72,7 @@ const MyTrips = () => {
 
 
 
-    const res = trips.reverse().map((trip)=> <Traveler vis={false} trip_for={trip.trip_for} title={trip.title} name={trip.traveler.name} profile={trip.traveler.profile} from={trip.from_var} to={trip.to_var} date={trip.date} time={trip.remaining_time} />)
+    const res = trips.reverse().map((trip)=> <Traveler key={trip.id} vis={false} trip_for={trip.trip_for} title={trip.title} name={trip.traveler.name} profile={trip.traveler.profile} from={trip.from_var} to={trip.to_var} date={trip.date} time={trip.remaining_time} />)
 
   return (
     
@@ -108,6 +113,14 @@ const MyTrips = () => {
       <h1 onClick={()=>setFilter(!filter)} className='md:hidden border-0 text-center m-2 mt-1 text-md text-white py-2 px-3 rounded-md font-semibold bg-sky-400 flex'><img src={tab} className='w-6 mr-2'/> Post Trip</h1>
           </div>
       <div className='tra flex flex-col overflow-y-scroll h-[535px]'>
+      
+      <div className='shadow-sm m-1 p-3 ease-in-out duration-700 shadow-gray-500 rounded-md'>
+        <div className='flex items-center'>
+        <img src={explore} className='w-20'/>
+        <p className='p-1 text-center text-yellow-0 text-sm'>"Discover our collection of visited places across different countries! From stunning beaches to breathtaking mountains, we've got it all. Explore our curated list and get inspired for your next adventure."</p>
+        </div>
+        <button onClick={()=>nav('/explore')} className='border-2 p-3 m-1 float-right py-1 text-white font-bold rounded-md bg-yellow-400 border-gray-400'>Explore</button>
+        </div>
       {res}
       </div>
       </div>
@@ -115,7 +128,7 @@ const MyTrips = () => {
       </div>
 
       <div className={filter ? 'md:hidden fixed bg-white w-full h-full top-0 text-md p-5 left-0' : 'hidden md:hidden fixed bg-white w-full h-full top-0 text-lg p-5 left-0'}>
-      <h1 className='text-center m-2 text-lg text-sky-400 font-semibold'>Filters</h1>
+      <h1 className='text-center m-2 text-lg text-sky-400 font-semibold'>Post Trip</h1>
       <form onSubmit={CreateApi}>
       <label htmlFor='title' className='m-4 font-medium'>Title</label><br/>
           <input type='text' required id='title' className='m-3 p-1 border-0 w-80 outline-none h-5  border-b-2 bg-white border-sky-400'/><br/>

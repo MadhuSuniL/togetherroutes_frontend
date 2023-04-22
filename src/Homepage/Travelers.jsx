@@ -4,17 +4,20 @@ import Header from '../Header'
 import Traveler from './components/Traveler'
 import { AuthContext } from '../contexts/AuthContext'
 import { FilterContext } from '../contexts/FilterContext'
-import explore from '../assests/explore.mp4'
+import explore from '../assests/travel.png'
+import Loading from '../Loading'
+
 const Travelers = () => {
     // states
     const nav = useNavigate()
     const [filter, setFilter] = useState(false)
     const [data,setData] = useState([])
-    
+    const [loading,setLoading] = useState(false)
     const {authState} = useContext(AuthContext)
     const {filterState,setFilterState,trips} = useContext(FilterContext)
     
     function check_auth(){
+        
         if(authState.isAuthenticated != true){
             return nav('/signin')
         }
@@ -29,7 +32,7 @@ const Travelers = () => {
     const filterFuntion = (f)=>{
         f.preventDefault()
         
-
+        setLoading(true)
         setFilterState({
             title:f.target[0].value,
             from:f.target[1].value,
@@ -37,10 +40,12 @@ const Travelers = () => {
             trip_for:f.target[3].value,
             date:f.target[4].value
             })
+            setLoading(false)
+        
         }
       
 
-    const res = data.reverse().map((trip)=> <Traveler vis={true} trip_for={trip.trip_for} title={trip.title} name={trip.traveler.name} profile={trip.traveler.profile} from={trip.from_var} to={trip.to_var} date={trip.date} time={trip.remaining_time} />)
+    const res = data.reverse().map((trip)=> <Traveler key={trip.id} vis={true} trip_for={trip.trip_for} title={trip.title} name={trip.traveler.name} profile={trip.traveler.profile} from={trip.from_var} to={trip.to_var} date={trip.date} time={trip.remaining_time} />)
 
         // const res = ''
         
@@ -60,7 +65,6 @@ const Travelers = () => {
 
             <label htmlFor='from' className='m-4 font-medium'>From</label><br/>
             <input type='text' id='from' className='m-3 p-1 border-0 outline-none w-64 h-7 border-b-2 bg-white border-sky-400'/><br/>
-
         <label htmlFor='to' className='m-4 font-medium'>To</label><br/>
         <input type='text' id='to' className='m-3 p-1 border-0 outline-none w-64 h-7 border-b-2 bg-white border-sky-400'/><br/>
 
@@ -89,9 +93,7 @@ const Travelers = () => {
         {/* ad */}
         <div className='shadow-sm m-1 p-3 ease-in-out duration-700 shadow-gray-500 rounded-md'>
         <div className='flex items-center'>
-        {/* <video src={explore} className='w-32 m-2 rounded-md shadow-xl shadow-sky-400' loop autoPlay muted>
-            Something wrong
-        </video> */}
+        <img src={explore} className='w-20'/>
         <p className='p-1 text-center text-yellow-0 text-sm'>"Discover our collection of visited places across different countries! From stunning beaches to breathtaking mountains, we've got it all. Explore our curated list and get inspired for your next adventure."</p>
         </div>
         <button onClick={()=>nav('/explore')} className='border-2 p-3 m-1 float-right py-1 text-white font-bold rounded-md bg-yellow-400 border-gray-400'>Explore</button>
@@ -132,7 +134,7 @@ const Travelers = () => {
         </form>
         <br></br>
         </div>
-    
+    {loading && <Loading/>}
     </div>
   )
 }

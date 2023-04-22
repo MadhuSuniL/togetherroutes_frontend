@@ -7,7 +7,8 @@ import user from '../../assests/user.png'
 import ft from '../../assests/ft.png'
 
 const Traveler = (p) => {
-  const domain = 'http://localhost:8000/'
+  // const domain = 'http://localhost:8000/'
+  const domain = 'https://travelmates.pythonanywhere.com/'
   const [request, setRequest] = useState(false)
 
 
@@ -16,7 +17,7 @@ const Traveler = (p) => {
     var cudate = new Date()
     var diff = main - cudate
     diff = Math.ceil(diff / (1000 * 60 * 60 * 24));
-    if (diff == 0){
+    if (diff <= 0){
       return 'Completed'
     }
     return `${diff} days to go`

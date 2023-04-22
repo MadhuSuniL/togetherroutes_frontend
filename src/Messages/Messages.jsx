@@ -31,7 +31,9 @@ const Messages = () => {
       const response = fetch(authState.domain+'messages/recv_msg',{
         headers:{
           'Content-Type':'application/json',
-          'Accept':'application/json'
+          'Accept':'application/json',
+          'Authorization':'Bearer '+authState.access
+
         },
         method:'POST',
         body:JSON.stringify({
@@ -55,7 +57,11 @@ const Messages = () => {
 
     async function get_mates(){
       setLoading(true)
-      const response = await fetch(authState.domain+'travelmates/get_mates/')
+      const response = await fetch(authState.domain+'travelmates/get_mates/',{
+        headers:{
+          'Authorization':'Bearer '+authState.access
+        }
+      })
       const res_data = await response.json()
       setMates(res_data)
       setLoading(false)
@@ -67,7 +73,12 @@ const Messages = () => {
 
      async function Api(){
       setLoading(true)     
-        const response = await fetch(authState.domain+'messages/get_msgs/')
+        const response = await fetch(authState.domain+'messages/get_msgs/',{
+          headers:{
+          'Authorization':'Bearer '+authState.access
+
+          }
+        })
         const res_data = await response.json()
         setData(res_data)
         setLoading(false)
@@ -163,13 +174,15 @@ const Messages = () => {
         
         <h1 className='text-center m-2 text-lg font-semibold'>Travelmates</h1>
         
-        <h1 onClick={()=>{
+        {
+          mates.map(obj=> <h1 key={obj.id} onClick={()=>{
             setOptBoll(!optBool)
-            setRecieverImg()
-            setRecieverName()
+            setRecieverImg(authState.domain+obj.mate_var.profile)
+            setRecieverName(obj.mate_var.name)
+            setRecieverId(obj.mate_var.id)
         }
-        } className='flex cursor-pointer m-4 items-center text-md shadow-sm text-sky-400 border-0 rounded-md font-bold'><img src={reciverImg} className='w-10 mr-2 rounded-full'/> {reciverName}</h1>
-        
+        } className='flex cursor-pointer m-4 items-center text-md shadow-sm text-sky-400 border-0 rounded-md font-bold'><img src={authState.domain+obj.mate_var.profile} className='w-10 mr-2 rounded-full'/> {obj.mate_var.name}</h1>)
+        }
         </div>
 
 

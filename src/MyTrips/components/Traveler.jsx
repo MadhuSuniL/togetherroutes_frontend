@@ -18,7 +18,7 @@ const Traveler = () => {
        <h1 className='m-3 mt-0 text-md  font-semibold text-left  flex'><span><img src={user} className='mr-1 mt-[13%] w-4'/></span>Madhu</h1> 
         <h1 className='m-3 text-sm  font-semibold text-left flex '><span><img src={time} className='mr-1 mt-[13%] w-4'/></span>12-03-2023</h1>
         <h1 className='m-3 text-sm  font-semibold text-left flex '><span><img src={usb} className='mr-1 mt-[13%] w-4'/></span> Tourism</h1>
-        <h1 className='m-3 text-sm  font-semibold text-left flex '><span><img src={timer} className='mr-1 mt-[13%] w-4'/></span> 3 days  to go</h1>
+        <h1 className='m-3 text-sm  font-semibold text-left flex '><span><img src={timer} className='mr-1 mt-[13%] w-4'/></span>  days  to go</h1>
         {/* <br/> */}
 
         <div className='flex justify-around  mt-5'>

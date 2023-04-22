@@ -1,15 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import user from '../../assests/g.png'
+import { AuthContext } from '../../contexts/AuthContext'
 const Request = (p) => {
 
     const [react, setReact] = useState('none')
-    const domain = 'http://127.0.0.1:8000/'
+    // const domain = 'http://127.0.0.1:8000/'
+    const domain = 'https://travelmates.pythonanywhere.com/'
+
+    const {authState}  = useState(AuthContext)
 
     function accept(){
       fetch(domain+'requests/accept_reject/'+String(p.id),{
         headers:{
           'Content-Type':'application/json',
-          'Accept':'application/json'
+          'Accept':'application/json',
+          'Authorization':'Bearer '+authState.access
         },
         method:'PUT',
         body:JSON.stringify({
@@ -23,7 +28,8 @@ const Request = (p) => {
       fetch(domain+'requests/accept_reject/'+String(p.id),{
         headers:{
           'Content-Type':'application/json',
-          'Accept':'application/json'
+          'Accept':'application/json',
+          'Authorization':'Bearer '+authState.access
         },
         method:'PUT',
         body:JSON.stringify({

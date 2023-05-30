@@ -44,9 +44,12 @@ const Travelers = () => {
         
         }
       
-
+    try{
     const res = data.reverse().map((trip)=> <Traveler key={trip.id} vis={true} trip_for={trip.trip_for} title={trip.title} name={trip.traveler.name} profile={trip.traveler.profile} from={trip.from_var} to={trip.to_var} date={trip.date} time={trip.remaining_time} />)
-
+    }
+    except{
+        const res = 'No data found...!'
+    }
         // const res = ''
         
 
